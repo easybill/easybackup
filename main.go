@@ -41,6 +41,17 @@ func xtrabackup(targetDir string, incrementalBasedir string) {
 		_ = os.RemoveAll(targetDir)
 		panic(err)
 	}
+
+	// Fix file and dir permissions: All files and dirs readable
+	if output, err := exec.Command("chmod", "-R", "+r", targetDir).CombinedOutput(); err != nil {
+		fmt.Println(string(output))
+		panic(err)
+	}
+
+	if output, err := exec.Command("sh", "-c", "find "+targetDir+" -type d -exec chmod +x {} +").CombinedOutput(); err != nil {
+		fmt.Println(string(output))
+		panic(err)
+	}
 }
 
 func main() {
