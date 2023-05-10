@@ -55,7 +55,7 @@ func xtrabackup(targetDir string, incrementalBasedir string) {
 
 func main() {
 
-	lock, err := lockfile.New(filepath.Join(os.TempDir(), "easybackup"))
+	lock, err := lockfile.New(filepath.Join(os.TempDir(), "easybackup.pid"))
 	if err != nil {
 		panic(err)
 	}
