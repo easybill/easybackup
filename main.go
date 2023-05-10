@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strconv"
 	"time"
 )
 
@@ -120,8 +119,8 @@ func main() {
 	if incCount == 0 {
 		incrementalBasedir = backupDirBase
 	} else {
-		incrementalBasedir = filepath.Join(backupDirInc, strconv.Itoa(incCount))
+		incrementalBasedir = filepath.Join(backupDirInc, fmt.Sprintf("%02d", incCount))
 	}
 
-	xtrabackup(filepath.Join(backupDirInc, strconv.Itoa(incCount+1)), incrementalBasedir)
+	xtrabackup(filepath.Join(backupDirInc, fmt.Sprintf("%02d", incCount+1)), incrementalBasedir)
 }
