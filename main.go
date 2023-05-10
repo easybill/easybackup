@@ -77,18 +77,18 @@ func main() {
 
 	currentTime := time.Now()
 
-	backupDirToday := backupDir + "/" + currentTime.Format("2006-01-02")
+	backupDirToday := filepath.Join(backupDir, currentTime.Format("2006-01-02"))
 	if _, err := os.Stat(backupDirToday); os.IsNotExist(err) {
 		if err := os.Mkdir(backupDirToday, os.ModePerm); err != nil {
 			panic(err)
 		}
 	}
 
-	backupDirBase := backupDirToday + "/base"
+	backupDirBase := filepath.Join(backupDirToday, "base")
 	if _, err := os.Stat(backupDirBase); os.IsNotExist(err) {
 		xtrabackup(backupDirBase, "")
 
-		backupDirYesterday := backupDir + "/" + currentTime.AddDate(0, 0, -1).Format("2006-01-02")
+		backupDirYesterday := filepath.Join(backupDir, currentTime.AddDate(0, 0, -1).Format("2006-01-02"))
 		if _, err := os.Stat(backupDirYesterday); !os.IsNotExist(err) {
 			_ = os.RemoveAll(backupDirYesterday)
 		}
@@ -96,7 +96,7 @@ func main() {
 		return
 	}
 
-	backupDirInc := backupDirToday + "/inc"
+	backupDirInc := filepath.Join(backupDirToday, "inc")
 	if _, err := os.Stat(backupDirInc); os.IsNotExist(err) {
 		if err := os.Mkdir(backupDirInc, os.ModePerm); err != nil {
 			panic(err)
