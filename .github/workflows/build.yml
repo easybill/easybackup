@@ -18,13 +18,13 @@ jobs:
         run: go get .
 
       - name: Build
-        run: GOOS=linux GOARCH=amd64 go build -v ./...
+        run: GOOS=linux GOARCH=amd64 go build -o easybackup_linux_amd64
 
       - name: Upload Build results
         uses: actions/upload-artifact@v3
         with:
-          name: easybackup_linux_amd64
-          path: easybackup
+          name: easybackup
+          path: easybackup_*
 
   release:
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
         with:
-          name: my-artifact
+          name: easybackup
 
       - name: Display structure of downloaded files
         run: ls -R
