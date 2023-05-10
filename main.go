@@ -12,7 +12,7 @@ import (
 )
 
 func xtrabackup(targetDir string, incrementalBasedir string) {
-	arg := []string{"--back1up", "--target-dir=" + targetDir, "--parallel=4"}
+	arg := []string{"--backup", "--target-dir=" + targetDir, "--parallel=4"}
 	if incrementalBasedir != "" {
 		arg = append(arg, "--incremental-basedir="+incrementalBasedir)
 	}
