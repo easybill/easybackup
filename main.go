@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"github.com/nightlyone/lockfile"
 	"os"
@@ -53,7 +54,14 @@ func xtrabackup(targetDir string, incrementalBasedir string) {
 	}
 }
 
+var silentLock bool
+
+func init() {
+	flag.BoolVar(&silentLock, "silent-lock", false, "")
+}
+
 func main() {
+	flag.Parse()
 
 	lock, err := lockfile.New(filepath.Join(os.TempDir(), "easybackup.pid"))
 	if err != nil {
@@ -61,6 +69,9 @@ func main() {
 	}
 
 	if err = lock.TryLock(); err != nil {
+		if silentLock {
+			return
+		}
 		panic(err)
 	}
 
@@ -71,8 +82,8 @@ func main() {
 	}()
 
 	var backupDir string
-	if os.Args != nil && len(os.Args) > 1 {
-		backupDir = os.Args[1]
+	if len(flag.Args()) > 0 {
+		backupDir = flag.Args()[0]
 		if _, err := os.Stat(backupDir); os.IsPermission(err) || os.IsNotExist(err) {
 			panic(err)
 		}
