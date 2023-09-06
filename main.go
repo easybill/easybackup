@@ -63,6 +63,11 @@ func init() {
 func main() {
 	flag.Parse()
 
+	if _, err := os.Stat(filepath.Join("/", "var", "tmp", "easybackup.disabled")); err == nil {
+		fmt.Println("easybackup is manually disabled.")
+		return
+	}
+
 	lock, err := lockfile.New(filepath.Join(os.TempDir(), "easybackup.pid"))
 	if err != nil {
 		panic(err)
